@@ -1,0 +1,22 @@
+{
+  "directory": "app",
+  "name": "dicussion",
+  "authors": [
+    "vladimir.mares <vladimir.mares@gmail.com>"
+  ],
+  "description": "",
+  "main": "bower",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "nette-forms": "nette/forms#^2.4.7",
+    "nette.ajax.js": "^2.3.0"
+  }
+}

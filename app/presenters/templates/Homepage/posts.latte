@@ -1,0 +1,8 @@
+
+{block content}
+{snippet posts}
+{foreach $posts as $post}
+    {control postsContainer-$post->id}
+{/foreach}
+{/snippet}
+{/block}

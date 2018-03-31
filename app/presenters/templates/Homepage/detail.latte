@@ -1,0 +1,10 @@
+{* This is the welcome page, you can delete it *}
+
+{block content}
+<div>
+  {$post->title}
+</div>
+<div>
+    {$post->content}
+</div>
+{control commentsContainer-$post->id}

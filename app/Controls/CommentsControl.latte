@@ -1,0 +1,20 @@
+<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
+
+<div style="margin: 30px;">
+    {if $user->loggedIn}
+        {control addCommentForm}
+    {/if}
+      {snippetArea snippetArea-$snippetAreaName}
+        {foreach $comments as $comment}
+            {snippet comment-$comment->id}
+                <div>
+                    {$comment->comment}
+                    {if $user->isInRole('admin')}
+                        &nbsp;&nbsp;<a class="ajax" n:href="delete!, $comment->id">smazat</a>
+                    {/if}
+                    {control commentsContainer-$comment->id}
+                </div>
+            {/snippet}
+        {/foreach}
+    {/snippetArea}
+</div>
