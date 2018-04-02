@@ -10,9 +10,17 @@ class PostModel extends BaseModel
 	/** @var Nette\Database\Context */
 	protected $database;
 
+	/**
+	 * @var string
+	 */
 	protected $tableName;
 
-	public function __construct(Nette\Database\Context $database, $tableName = 'posts')
+	/**
+	 * PostModel constructor.
+	 * @param Nette\Database\Context $database
+	 * @param string $tableName
+	 */
+	public function __construct(Nette\Database\Context $database, $tableName = 'post')
 	{
 		parent::__construct();
 		$this->database = $database;

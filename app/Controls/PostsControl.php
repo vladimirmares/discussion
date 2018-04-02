@@ -1,20 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: vladik
- * Date: 23.3.18
- * Time: 18:12
- */
 
 namespace Control;
 
-use Model\CommentModel;
-use Model\PostModel;
 use Nette\Application\UI;
 use Nette;
 use Service\DiscussionService;
-use Tracy\Debugger;
 
+/**
+ * Class PostsControl
+ * @package Control
+ */
 class PostsControl extends UI\Control
 {
 
@@ -22,20 +17,32 @@ class PostsControl extends UI\Control
 	protected $discussionService;
 
 
+	/**
+	 * @var
+	 */
 	private $postId;
 
 
+	/**
+	 * @param $id
+	 */
 	public function setPostId($id)
 	{
 		$this->postId = $id;
 	}
 
+	/**
+	 * @param DiscussionService $discussionService
+	 */
 	public function setDiscussionService(DiscussionService $discussionService)
 	{
 		$this->discussionService = $discussionService;
 	}
 
 
+	/**
+	 *
+	 */
 	public function render()
 	{
 		$this->template->setFile(__DIR__ . '/PostsControl.latte');
@@ -43,37 +50,11 @@ class PostsControl extends UI\Control
 		$this->template->render();
 	}
 
-	protected function createComponentAddPostForm()
-	{
-		$form = new UI\Form();
-		$form->addTextArea('title', 'Komentář')
-			->setRequired();
-		$form->addTextArea('content', 'Komentář')
-			->setRequired();
-		$form->addSubmit('send', 'Přidat komentář')
-			->setHtmlAttribute('class', 'ajax');
-		$form->onSuccess[] = [$this, 'processAddPostForm'];
 
-		return $form;
-	}
-
-	public function processAddPostForm(UI\Form $form)
-	{
-		if($this->presenter->getUser()->loggedIn) {
-			$values = $form->values;
-			$values['userId'] = $this->presenter->getUser()->id;
-			$this->discussionService->savePost($values);
-			$form->setValues([], TRUE);
-			$this->flashMessage('Komentář byl úspěšně přidán, děkujeme.');
-		}
-		if ($this->presenter->isAjax()) {
-			$this->presenter->redrawControl();
-		} else {
-			$this->redirect('this');
-		}
-	}
-
-
+	/**
+	 * @param $id
+	 * @throws Nette\Application\AbortException
+	 */
 	public function handleDelete($id)
 	{
 		if($this->presenter->getUser()->isInRole('admin')) {
@@ -86,8 +67,9 @@ class PostsControl extends UI\Control
 		}
 	}
 
-
-
+	/**
+	 * @return UI\Multiplier
+	 */
 	protected function createComponentCommentsContainer()
 	{
 		$service = $this->discussionService;

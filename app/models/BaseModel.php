@@ -4,22 +4,39 @@ namespace Model;
 use Nette;
 
 
+/**
+ * Class BaseModel
+ * @package Model
+ */
 class BaseModel
 {
 	/** @var Nette\Database\Context */
 	protected $database;
 
+	/**
+	 * @var string
+	 */
 	protected $tableName;
 
+	/**
+	 * BaseModel constructor.
+	 */
 	public function __construct()
 	{
-
 	}
 
+	/**
+	 * @param $id
+	 * @return false|Nette\Database\Table\ActiveRow
+	 */
 	public function get($id)
 	{
 		return $this->database->table($this->tableName)->get($id);
 	}
+
+	/**
+	 * @return Nette\Database\Table\Selection
+	 */
 	public function getAll()
 	{
     	return $this->database->table($this->tableName);
@@ -34,7 +51,6 @@ class BaseModel
 		$row = $this->database
 			->table($this->tableName)
 			->insert($values);
-
 		return $row->id;
 	}
 
@@ -67,6 +83,10 @@ class BaseModel
 		return $id;
 	}
 
+	/**
+	 * @param $id
+	 * @return int
+	 */
 	public function delete($id)
 	{
 		return $this->database->table($this->tableName)->where('id', [$id])->delete();

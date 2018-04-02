@@ -1,17 +1,24 @@
 <div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
 
 <div style="margin: 30px;">
-    {if $user->loggedIn}
-        {control addPostForm}
-    {/if}
-        {snippet}
+    {snippet}
+        <div>
             <div>
-            Post:
-                {$post->title}
-                {$post->content}
-                {if $user->isInRole('admin')}
-                    &nbsp;&nbsp;<a class="ajax" n:href="delete!, $post->id">smazat</a>
-                {/if}
+                <h3>{$post->title}</h3>
             </div>
-        {/snippet}
+            <div>
+                Created: {$post->created|date:'%d.%m.%Y %H:%M'}
+            </div>
+            <div>
+                Last comment: {$post->lastCommentCreated|date:'%d.%m.%Y %H:%M'}
+            </div>
+            <div>
+                {$post->content}
+            </div>
+            <a href="{plink Homepage:detail $post->id}">Detail</a>
+            {if $user->isInRole('admin')}
+                &nbsp;&nbsp;<a class="ajax" n:href="delete!, $post->id">smazat</a>
+            {/if}
+        </div>
+    {/snippet}
 </div>

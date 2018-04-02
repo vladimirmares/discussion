@@ -1,10 +1,24 @@
 {* This is the welcome page, you can delete it *}
 
 {block content}
+{snippet detail}
 <div>
-  {$post->title}
-</div>
-<div>
-    {$post->content}
-</div>
+    <div>
+        <h3>{$post->title}</h3>
+    </div>
+    <div>
+        Created: {$post->created|date:'%d.%m.%Y %H:%M'}
+    </div>
+    <div>
+        Created by:{$post->user->username}
+    </div>
+    <div>
+        Last comment: {$post->lastCommentCreated|date:'%d.%m.%Y %H:%M'}
+    </div>
+    <div>
+        {$post->content}
+    </div>
+
 {control commentsContainer-$post->id}
+
+{/snippet}

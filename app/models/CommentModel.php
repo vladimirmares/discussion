@@ -4,6 +4,10 @@ namespace Model;
 
 use Nette;
 
+/**
+ * Class CommentModel
+ * @package Model
+ */
 class CommentModel extends BaseModel
 {
 	/**
@@ -21,15 +25,23 @@ class CommentModel extends BaseModel
 	 * CommentModel constructor.
 	 * @param Nette\Database\Context $database
 	 */
-	public function __construct(Nette\Database\Context $database, $tableName = 'comments')
+	public function __construct(Nette\Database\Context $database, $tableName = 'comment')
 	{
 		parent::__construct();
 		$this->database = $database;
 		$this->tableName = $tableName;
 	}
 
+	/**
+	 * @param $postId
+	 * @param array $where
+	 * @param null $order
+	 * @param string $orderDirection
+	 * @param null $limit
+	 * @return Nette\Database\Table\Selection
+	 */
 	public function getCommentsForPost($postId, $where = array(), $order = null, $orderDirection = 'DESC', $limit = null){
-		$where['postId'] = $postId;
+		$where['post_id'] = $postId;
 		$table = $this->database->table($this->tableName);
 		foreach ($where as $key => $val) {
 			if ($key == 'condition') {
@@ -56,12 +68,12 @@ class CommentModel extends BaseModel
 	{
 		return $this->database
 			->table($this->tableName)
-			->where('postId', [$postId])
+			->where('post_id', [$postId])
 			->where('parentCommentId', null);
 	}
 
 	/**
-	 * @param $postId
+	 * @param $commentId
 	 * @return Nette\Database\Table\Selection
 	 */
 	public function getChildComments($commentId)

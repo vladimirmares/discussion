@@ -1,19 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: vladik
- * Date: 23.3.18
- * Time: 18:12
- */
 
 namespace Control;
 
-use Model\CommentModel;
 use Nette\Application\UI;
 use Nette;
 use Service\DiscussionService;
-use Tracy\Debugger;
 
+/**
+ * Class CommentsControl
+ * @package Control
+ */
 class CommentsControl extends UI\Control
 {
 
@@ -25,6 +21,9 @@ class CommentsControl extends UI\Control
 	 */
 	protected $postId;
 
+	/**
+	 * @var
+	 */
 	protected $commentId;
 
 	/**
@@ -38,17 +37,26 @@ class CommentsControl extends UI\Control
 		$this->discussionService = $discussionService;
 	}
 
+	/**
+	 * @param $id
+	 */
 	public function setPostId($id)
 	{
 		$this->postId = $id;
 	}
 
+	/**
+	 * @param $id
+	 */
 	public function setCommentId($id)
 	{
 		$this->commentId = $id;
 	}
 
 
+	/**
+	 *
+	 */
 	public function render()
 	{
 		$this->template->setFile(__DIR__ . '/CommentsControl.latte');
@@ -65,6 +73,9 @@ class CommentsControl extends UI\Control
 		$this->template->render();
 	}
 
+	/**
+	 * @return UI\Form
+	 */
 	protected function createComponentAddCommentForm()
 	{
 		$form = new UI\Form();
@@ -77,13 +88,17 @@ class CommentsControl extends UI\Control
 		return $form;
 	}
 
+	/**
+	 * @param UI\Form $form
+	 * @throws Nette\Application\AbortException
+	 */
 	public function processAddCommentForm(UI\Form $form)
 	{
 		if($this->presenter->getUser()->loggedIn) {
 			$values = $form->values;
 			$values['parentCommentId'] = $this->commentId;
-			$values['postId'] = $this->postId;
-			$values['userId'] = $this->presenter->getUser()->id;
+			$values['post_id'] = $this->postId;
+			$values['user_id'] = $this->presenter->getUser()->id;
 			$this->discussionService->saveComment($values);
 			$form->setValues([], TRUE);
 			$this->flashMessage('Komentář byl úspěšně přidán, děkujeme.');
@@ -96,6 +111,10 @@ class CommentsControl extends UI\Control
 	}
 
 
+	/**
+	 * @param $id
+	 * @throws Nette\Application\AbortException
+	 */
 	public function handleDelete($id)
 	{
 		if($this->presenter->getUser()->isInRole('admin')) {
@@ -108,8 +127,45 @@ class CommentsControl extends UI\Control
 		}
 	}
 
+	/**
+	 * @param $id
+	 * @throws Nette\Application\AbortException
+	 */
+	public function handleLike($id)
+	{
+		if($this->presenter->getUser()->loggedIn) {
+			$userId = $this->presenter->getUser()->getId();
+			$this->discussionService->processLike($id, $userId, 1, null );
+		}
+		if ($this->presenter->isAjax()) {
+			$this->presenter->redrawControl();
+		} else {
+			$this->redirect('this');
+		}
+
+	}
+
+	/**
+	 * @param $id
+	 * @throws Nette\Application\AbortException
+	 */
+	public function handleDislike($id)
+	{
+		if($this->presenter->getUser()->loggedIn) {
+			$userId = $this->presenter->getUser()->getId();
+			$this->discussionService->processLike($id, $userId, null, 1 );
+		}
+		if ($this->presenter->isAjax()) {
+			$this->presenter->redrawControl();
+		} else {
+			$this->redirect('this');
+		}
+	}
 
 
+	/**
+	 * @return UI\Multiplier
+	 */
 	protected function createComponentCommentsContainer()
 	{
 		$service = $this->discussionService;

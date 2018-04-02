@@ -1,14 +1,6 @@
 
 {block content}
 
-    <ul class="navig">
-        <li><a n:href="Homepage:">Články</a></li>
-        {if $user->loggedIn}
-            <li><a n:href="Sign:out">Odhlásit</a></li>
-        {else}
-            <li><a n:href="Sign:in">Přihlásit</a></li>
-        {/if}
-    </ul>
 {snippet posts}
     <h1>Přehled článků</h1>
 

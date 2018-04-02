@@ -7,10 +7,14 @@
       {snippetArea snippetArea-$snippetAreaName}
         {foreach $comments as $comment}
             {snippet comment-$comment->id}
-                <div>
+                <div style="border: 1px solid black;">
                     {$comment->comment}
                     {if $user->isInRole('admin')}
                         &nbsp;&nbsp;<a class="ajax" n:href="delete!, $comment->id">smazat</a>
+                    {/if}
+                    {if $user->loggedIn}
+                       {$comment->likes} <a class="ajax" n:href="like!, $comment->id">like</a>
+                        {$comment->dislikes}<a class="ajax" n:href="dislike!, $comment->id">dislike</a>
                     {/if}
                     {control commentsContainer-$comment->id}
                 </div>

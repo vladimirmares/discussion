@@ -16,7 +16,7 @@ $this->database = $database;
 function authenticate(array $credentials)
 {
 list($username, $password) = $credentials;
-$row = $this->database->table('users')
+$row = $this->database->table('user')
 ->where('username', $username)->fetch();
 
 if (!$row) {

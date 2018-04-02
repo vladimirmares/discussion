@@ -18,10 +18,8 @@ class SignPresenterTest extends Tester\TestCase
 
 	public function testSomething()
 	{
-// z DI kontejneru, který vytvořil bootstrap.php, získáme instanci PresenterFactory
 		$presenterFactory = $this->container->getByType('Nette\Application\IPresenterFactory');
 
-// a vyrobíme presenter Sign
 		$presenter = $presenterFactory->createPresenter('Sign');
 		$presenter->autoCanonicalize = false;
 		$request = new Nette\Application\Request('Sign', 'GET', array('action' => 'in'));
